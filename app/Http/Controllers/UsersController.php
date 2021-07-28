@@ -23,7 +23,7 @@ class UsersController extends Controller
 
     public function viewAll(Request $request)
     {
-        if ($request->session()->has('login') &&  session('role') == 1) {
+        if ($request->session()->has('login')) {
             $data = $this->getAll();
             return view('users', ['data' => $data]);
         } else {
@@ -46,16 +46,11 @@ class UsersController extends Controller
         $data = $post->validate([
             'username' => 'required|string|unique:users,username',
             'password' => 'required|string',
-            'name'  => 'string',
-            'stock' => 'numeric',
-            'status' => 'numeric', 
-            'role' => 'numeric'
         ]);
-        $user->name = $data['name'];
+
         $user->username = $data['username'];
-        $user->status = $data['status'];
         $user->password = sha1($data['password']);
-        $user->role = $data['role'];
+        // $user->createby = session();
         $save = $user->save();
         if ($save) {
             return redirect('/users');
@@ -68,11 +63,9 @@ class UsersController extends Controller
     {
         $data = $post->input();
         $update = User::where('id', "=", $id)->update(array(
-            'name' => $data['name'],
             'username' => $data['username'],
             'password' => $data['password'],
-            'role' => $data['role'],
-            'status' => $data['status']
+            // $user->createby = session();
         ));
         if ($update) {
             return redirect('/users');
@@ -83,7 +76,7 @@ class UsersController extends Controller
 
     public function viewEdit(Request $request, $id)
     {
-        if ($request->session()->has('login') && session('role') == 1) {
+        if ($request->session()->has('login')) {
             $data  = User::where('id', $id)->first();
             return view('form-user', ['data' => $data]);
         } else {
@@ -114,13 +107,9 @@ class UsersController extends Controller
     {
         $data = $post->input();
         $user = User::where([['username', '=', $data['username']], ['password', '=', sha1($post['password'])]])->first();
-        if ($user && $user->status > 0 && $user->role == 2 && $user->status > 0) {
-
-            session(['username' => $user->username, 'role' => '2', 'name' => $user->name, 'login' => true]);
-            return redirect()->action([StuffsController::class, 'viewAll']);
-        } else if ($user && $user->status > 0 && $user->role == 1 && $user->status > 0) {
-            session(['username' => $user->username, 'role' => '1', 'name' => $user->name, 'login' => true]);
-            return redirect()->action([StuffsController::class, 'viewAll']);
+        if (isset($user->id)) {
+            session(['username' => $user->username, 'id' => $user->id, 'name' => $user->name, 'login' => true]);
+            return redirect()->action([TransactionDetailController::class, 'viewAll']);
         } else {
             session()->flash('error', '');
             return redirect('/login');

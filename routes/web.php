@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StuffsController;
+use App\Http\Controllers\TransactionDetailController;
 use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
@@ -16,17 +16,16 @@ use App\Http\Controllers\UsersController;
 // 
 //  stuff CRUD
 //
-Route::get('/stuffs', [StuffsController::class, 'viewAll']);
-Route::get('/new-stuff', [StuffsController::class, 'viewNew']);
-Route::post('/save-new-stuff', [StuffsController::class, 'saveNew']);
-Route::post('/save-edit-stuff/{id}', [StuffsController::class, 'saveEdit']);
-Route::get('/edit-stuff/{id}', [StuffsController::class, 'viewEdit']);
-Route::delete('/delete-stuff/{id}', [StuffsController::class, 'delete']);
+Route::get('/', [TransactionDetailController::class, 'viewAll']);
+Route::get('/new-transaction', [TransactionDetailController::class, 'viewNew']);
+Route::post('/save-new-transaction', [TransactionDetailController::class, 'saveNew']);
+Route::post('/save-edit-transaction/{id}', [TransactionDetailController::class, 'saveEdit']);
+Route::get('/edit-transaction/{id}', [TransactionDetailController::class, 'viewEdit']);
+Route::delete('/delete-transaction/{id}', [TransactionDetailController::class, 'delete']);
 
 // 
 //  user CRUD
 //
-Route::get('/', [UsersController::class, 'home']);
 Route::get('/users', [UsersController::class, 'viewAll']);
 Route::get('/new-user', [UsersController::class, 'viewNew']);
 Route::post('/save-new-user', [UsersController::class, 'saveNew']);

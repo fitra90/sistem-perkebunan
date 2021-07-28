@@ -6,7 +6,7 @@
 		<meta charset="UTF-8">
 
 		<title>@yield('title')</title>
-		<meta name="keywords" content="HTML5 Admin Template" />
+		<meta name="keywords" content="Aplikasi Perkebunan" />
 		<meta name="description" content="Porto Admin - Responsive HTML5 Template">
 		<meta name="author" content="okler.net">
 
@@ -97,20 +97,24 @@
 						<div class="nano-content">
 							<nav id="menu" class="nav-main" role="navigation">
 								<ul class="nav nav-main">
-									<li {!! Request::segment(1) == "stuffs" || Request::segment(1) == "new-stuff" || Request::segment(1) == "edit-stuff"?  "class='nav-active'" : "" !!}>
-										<a href="/stuffs">
+									<li {!! Request::segment(1) == "/" || Request::segment(1) == "new-transaction" || Request::segment(1) == "edit-transaction"?  "class='nav-active'" : "" !!}>
+										<a href="/">
                                             <i class="fa fa-table" aria-hidden="true"></i>
-											<span>Stuffs</span>
+											<span>Transactions</span>
 										</a>
 									</li>
-									@if(Session::get('role') == 1)
+									<li {!! Request::segment(1) == "fruit-criteria" || Request::segment(1) == "new-fruit-criteria" || Request::segment(1) == "edit-fruit-criteria" ?  "class='nav-active'" : "" !!}>
+										<a href="/fruit-criteria">
+                                            <i class="fa fa-table" aria-hidden="true"></i>
+											<span>Fruit Criteria</span>
+										</a>
+									</li>
 									<li {!! Request::segment(1) == "users" || Request::segment(1) == "new-user" || Request::segment(1) == "edit-user" ?  "class='nav-active'" : "" !!}>
 										<a href="/users">
                                             <i class="fa fa-table" aria-hidden="true"></i>
 											<span>Users</span>
 										</a>
 									</li>
-									@endif
 								</ul>
 							</nav>
 				
