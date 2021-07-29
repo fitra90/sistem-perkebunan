@@ -15,10 +15,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
                                 <th>Username</th>
-                                <th>Role</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -27,10 +24,7 @@
                             @foreach ($data as $user)
                             <tr>
                                 <td>{{$i}}</td>
-                                <td>{{$user->name}}</td>
                                 <td>{{$user->username}}</td>
-                                <td>{{$user->role == 1 ? "Admin" : "Staff"}}</td>
-                                <td>{{$user->status == 1 ? "Available" : "Not Available"}}</td>
                                 <td>
                                     <button class="btn btn-default" type="button" onclick='editUser(<?= $user->id; ?>)'>Edit</button>
                                     <button class="btn btn-danger" type="button" onclick='deleteUser(<?= $user->id; ?>)'>Delete</button>

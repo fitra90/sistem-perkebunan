@@ -33,6 +33,7 @@
 		<script src="/assets/vendor/modernizr/modernizr.js"></script>
 		<script src="/assets/vendor/jquery/jquery.js"></script>
 
+		@yield('customCSS')
 	</head>
 	<body>
 		<section class="body">
@@ -59,8 +60,7 @@
 								<img src="/assets/images/!logged-user.jpg" alt="Joseph Doe" class="img-circle" data-lock-picture="/assets/images/!logged-user.jpg" />
 							</figure>
 							<div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-								<span class="name">{{Session::get('name')}}</span>
-								<span class="role">{{Session::get('role') == 1 ? "Administrator" : "Staff"}}</span>
+								<span class="name">{{Session::get('username')}}</span>
 							</div>
 			
 							<i class="fa custom-caret"></i>
@@ -97,16 +97,28 @@
 						<div class="nano-content">
 							<nav id="menu" class="nav-main" role="navigation">
 								<ul class="nav nav-main">
-									<li {!! Request::segment(1) == "/" || Request::segment(1) == "new-transaction" || Request::segment(1) == "edit-transaction"?  "class='nav-active'" : "" !!}>
+									<li {!! Request::segment(1) == "transaction-header" || Request::segment(1) == "new-header" || Request::segment(1) == "edit-header"?  "class='nav-active'" : "" !!}>
+										<a href="/transaction-header">
+                                            <i class="fa fa-table" aria-hidden="true"></i>
+											<span>Transaction Header</span>
+										</a>
+									</li>
+									<li {!! Request::segment(1) == "" || Request::segment(1) == "new-transaction" || Request::segment(1) == "edit-transaction"?  "class='nav-active'" : "" !!}>
 										<a href="/">
                                             <i class="fa fa-table" aria-hidden="true"></i>
-											<span>Transactions</span>
+											<span>Transaction Detail</span>
 										</a>
 									</li>
 									<li {!! Request::segment(1) == "fruit-criteria" || Request::segment(1) == "new-fruit-criteria" || Request::segment(1) == "edit-fruit-criteria" ?  "class='nav-active'" : "" !!}>
 										<a href="/fruit-criteria">
                                             <i class="fa fa-table" aria-hidden="true"></i>
 											<span>Fruit Criteria</span>
+										</a>
+									</li>
+									<li {!! Request::segment(1) == "report" ?  "class='nav-active'" : "" !!}>
+										<a href="/report">
+                                            <i class="fa fa-table" aria-hidden="true"></i>
+											<span>Report</span>
 										</a>
 									</li>
 									<li {!! Request::segment(1) == "users" || Request::segment(1) == "new-user" || Request::segment(1) == "edit-user" ?  "class='nav-active'" : "" !!}>
@@ -146,6 +158,8 @@
 		<script src="/assets/vendor/nanoscroller/nanoscroller.js"></script>
 		<script src="/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 		
+		@yield('customJS')
+		
 		<!-- Theme Base, Components and Settings -->
 		<script src="/assets/javascripts/theme.js"></script>
 		
@@ -154,6 +168,6 @@
 		
 		<!-- Theme Initialization Files -->
 		<script src="/assets/javascripts/theme.init.js"></script>
-
+		
 	</body>
 </html>

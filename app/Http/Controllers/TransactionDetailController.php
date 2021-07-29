@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TransactionDetail;
+use Illuminate\Support\Facades\DB;
 
 class TransactionDetailController extends Controller
 {
@@ -24,8 +25,10 @@ class TransactionDetailController extends Controller
 
     public function viewNew(Request $request)
     {
+        $data_buah = DB::table('fruit_criterias')->get();
+        $data_header = DB::table('transaction_headers')->get();
         if ($request->session()->has('login')) {
-            return view('form-stuff');
+            return view('form-transaction',['data_header' => $data_header, 'data_buah'=>$data_buah]);
         } else {
             return redirect('/');
         }
@@ -33,16 +36,17 @@ class TransactionDetailController extends Controller
 
     public function saveNew(Request $post)
     {
-        $stuff = new TransactionDetail();
+        $transaction = new TransactionDetail();
         $data = $post->input();
-        $stuff->name = $data['name'];
-        $stuff->stock = $data['stock'];
-        $stuff->status = $data['status'];
-        $save = $stuff->save();
+        $transaction->notrans = $data['notrans'];
+        $transaction->idbuah = $data['buah'];
+        $transaction->jumlah = $data['jumlah'];
+        $transaction->lastby = session('username');
+        $save = $transaction->save();
         if ($save) {
             return redirect('/');
         } else {
-            return redirect('/new-stuff');
+            return redirect('/new-transaction');
         }
     }
 
@@ -50,22 +54,25 @@ class TransactionDetailController extends Controller
     {
         $data = $post->input();
         $update = TransactionDetail::where('id', "=", $id)->update(array(
-            'name' => $data['name'],
-            'stock' => $data['stock'],
-            'status' => $data['status']
+            'notrans' => $data['notrans'],
+            'idbuah' => $data['buah'],
+            'jumlah' => $data['jumlah'],
+            'lastby' => session('username')
         ));
         if ($update) {
             return redirect('/');
         } else {
-            return redirect('/edit-stuff/' . $id);
+            return redirect('/edit-transaction/' . $id);
         }
     }
 
     public function viewEdit(Request $request, $id)
     {
         if ($request->session()->has('login')) {
+            $data_buah = DB::table('fruit_criterias')->get();
+            $data_header = DB::table('transaction_headers')->get();
             $data  = TransactionDetail::where('id', $id)->first();
-            return view('form-stuff', ['data' => $data]);
+            return view('form-transaction', ['data' => $data, 'data_header' => $data_header, 'data_buah'=>$data_buah]);
         } else {
             return redirect('/');
         }

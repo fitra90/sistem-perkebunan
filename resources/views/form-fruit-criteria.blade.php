@@ -1,9 +1,9 @@
 @extends('layout')
-@section('title', 'Admin Dashboard')
+@section('title', 'Fruit Criteria')
 <?php if (isset($data)) { ?>
-    @section('title_section', 'Edit User')
+    @section('title_section', 'Edit Fruit Criteria')
 <?php } else { ?>
-    @section('title_section', 'New User')
+    @section('title_section', 'New Fruit Criteria')
 <?php } ?>
 @section('content')
 
@@ -23,18 +23,12 @@
                     </ul>
                 </div>
                 @endif
-                <form class="form-horizontal form-bordered" action="<?= isset($data) ? '/save-edit-user/' . $data->id : '/save-new-user'; ?>" method="POST">
+                <form class="form-horizontal form-bordered" action="<?= isset($data) ? '/save-edit-fruit-criteria/' . $data->id : '/save-new-fruit-criteria'; ?>" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label class="col-md-3 control-label" for="inputDefault">Username</label>
+                        <label class="col-md-3 control-label" for="inputDefault">Name</label>
                         <div class="col-md-6">
-                            <input type="text" name="username" class="form-control" id="username" value="{{ isset($data) ? $data->username : old('username')}}" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 control-label" for="inputDefault">Password</label>
-                        <div class="col-md-6">
-                            <input type="password" name="password" class="form-control" id="password" value="{{ isset($data) ? $data->password : old('password')}}" required>
+                            <input type="text" name="name" class="form-control" id="name" value="{{ isset($data) ? $data->name : old('name')}}" required>
                         </div>
                     </div>
                     <br>

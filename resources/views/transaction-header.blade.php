@@ -1,6 +1,6 @@
 @extends('layout')
-@section('title', 'Transaction Detail')
-@section('title_section', 'Transaction Detail')
+@section('title', 'Transaction Header Detail')
+@section('title_section', 'Header Detail')
 @section('content')
 
 
@@ -8,7 +8,7 @@
     <div class="col-md-12">
         <section class="panel">
             <header class="panel-heading">
-                <button class="btn btn-info" type="button" onclick="newTrx()">New Transaction</button>
+                <button class="btn btn-info" type="button" onclick="newTrx()">New Header</button>
             </header>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -17,22 +17,25 @@
                             <tr>
                                 <th>#</th>
                                 <th>No. Transaction</th>
-                                <th>Buah</th>
+                                <th>Tanggal</th>
+                                <th>Divisi</th>
                                 <th>Jumlah</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
-                            @foreach ($data as $transaction)
+                            @foreach ($data as $header)
                             <tr>
                                 <td>{{$i}}</td>
-                                <td>{{$transaction->notrans}}</td>
-                                <td>{{$transaction->idbuah}}</td>
-                                <td>{{$transaction->jumlah}}</td>
+                                <td>{{$header->notrans}}</td>
+                                <td>{{$header->tanggal}}</td>
+                                <td>{{$header->divisi}}</td>
+                                <td>{{$header->totalbuah}}</td>
                                 <td>
-                                    <button class="btn btn-default" type="button" onclick='editTrx(<?= $transaction->id; ?>)'>Edit</button>
-                                    <button class="btn btn-danger" type="button" onclick='deleteTrx(<?= $transaction->id; ?>)'>Delete</button>
+                                    <input type="hidden" class="id" value="<?= $header->notrans; ?>">
+                                    <button class="btn btn-default" type="button" onclick='editTrx()'>Edit</button>
+                                    <button class="btn btn-danger" type="button" onclick='deleteTrx()'>Delete</button>
                                 </td>
                             </tr>
                             <?php $i++; ?>
@@ -45,25 +48,27 @@
     </div>
 </div>
 <script>
-    function deleteTrx(id) {
-        var r = confirm("Are you sure want to delete this transaction?");
+    function deleteTrx() {
+        var id = $('.id').val() ;
+        var r = confirm("Are you sure want to delete this header?");
         if (r == true) {
             // txt = "You pressed OK!";
             yesDelete(id)
         }
     }
 
-    function editTrx(id) {
-        location.href = "/edit-transaction/" + id
+    function editTrx() {
+        var id = $('.id').val() ;
+        location.href = "/edit-header/" + id
     }
 
     function newTrx() {
-        location.href = "/new-transaction/"
+        location.href = "/new-header/"
     }
 
     function yesDelete(id) {
         $.ajax({
-            url: '/delete-transaction/' + id,
+            url: '/delete-header/' + id,
             type: 'DELETE',
             data: {
                 'id': id,

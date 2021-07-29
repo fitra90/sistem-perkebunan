@@ -10,7 +10,7 @@ class UsersController extends Controller
     public function home(Request $request)
     {
         if ($request->session()->has('login')) {
-            return redirect('/stuffs');
+            return redirect('/login');
         } else {
             return redirect('/login');
         }
@@ -27,16 +27,16 @@ class UsersController extends Controller
             $data = $this->getAll();
             return view('users', ['data' => $data]);
         } else {
-            return redirect('/stuffs');
+            return redirect('/login');
         }
     }
 
     public function viewNew(Request $request)
     {
-        if ($request->session()->has('login') &&  session('role') == 1) {
+        if ($request->session()->has('login')) {
             return view('form-user');
         } else {
-            return redirect('/stuffs');
+            return redirect('/login');
         }
     }
 
@@ -50,7 +50,7 @@ class UsersController extends Controller
 
         $user->username = $data['username'];
         $user->password = sha1($data['password']);
-        // $user->createby = session();
+        $user->createby = session('username');
         $save = $user->save();
         if ($save) {
             return redirect('/users');
@@ -62,10 +62,11 @@ class UsersController extends Controller
     public function saveEdit(Request $post, $id)
     {
         $data = $post->input();
+
         $update = User::where('id', "=", $id)->update(array(
             'username' => $data['username'],
-            'password' => $data['password'],
-            // $user->createby = session();
+            'password' => sha1($data['password']),
+            'lastby' => session('username')
         ));
         if ($update) {
             return redirect('/users');
@@ -80,7 +81,7 @@ class UsersController extends Controller
             $data  = User::where('id', $id)->first();
             return view('form-user', ['data' => $data]);
         } else {
-            return redirect('/stuffs');
+            return redirect('/login');
         }
     }
 
@@ -97,7 +98,7 @@ class UsersController extends Controller
 
     public function login(Request $request) {
         if ($request->session()->has('login')) {
-            return redirect('/stuffs');
+            return redirect('/login');
         } else {
             return view('login');
         }
@@ -108,7 +109,7 @@ class UsersController extends Controller
         $data = $post->input();
         $user = User::where([['username', '=', $data['username']], ['password', '=', sha1($post['password'])]])->first();
         if (isset($user->id)) {
-            session(['username' => $user->username, 'id' => $user->id, 'name' => $user->name, 'login' => true]);
+            session(['username' => $user->username, 'username' => $user->username, 'login' => true]);
             return redirect()->action([TransactionDetailController::class, 'viewAll']);
         } else {
             session()->flash('error', '');
@@ -148,14 +149,4 @@ class UsersController extends Controller
         return Response($this->getAll(), 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 }

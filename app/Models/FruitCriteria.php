@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class FruitCriteria extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'name',
+        'createby',
+        'lastby',
+    ];
 }
